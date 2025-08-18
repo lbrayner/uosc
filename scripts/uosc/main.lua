@@ -1197,3 +1197,5 @@ end
 
 -- Initial commit
 Manager:disable('user', options.disable_elements)
+
+require('lbrayner')
