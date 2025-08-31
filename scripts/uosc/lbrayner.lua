@@ -1,3 +1,23 @@
+local previous_position
+
+local function previous_position_get()
+  return previous_position
+end
+
+local function previous_position_save()
+  mp.command("write-watch-later-config")
+  previous_position = mp.get_property_native("playlist-pos-1")
+end
+
+mp.add_key_binding("TAB", "previous_position_play", function()
+  local pos = previous_position_get()
+
+  if pos then
+    previous_position_save()
+    mp.set_property_native("playlist-pos-1", pos)
+  end
+end)
+
 mp.add_key_binding("g", "playlist_go_to", create_self_updating_menu_opener({
   title = t('Go To'),
   type = 'playlist',
@@ -22,7 +42,7 @@ mp.add_key_binding("g", "playlist_go_to", create_self_updating_menu_opener({
 
     if count == 1 then return end
 
-    mp.command("write-watch-later-config")
+    previous_position_save()
     mp.commandv('set', 'playlist-pos-1', tostring(event.value))
   end,
   on_paste = function(event) mp.commandv('loadfile', tostring(event.value), 'append') end,
