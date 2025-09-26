@@ -26,10 +26,8 @@ mp.add_key_binding("g", "playlist_go_to", create_self_updating_menu_opener({
     local items = {}
     local force_filename = mp.get_property_native('osd-playlist-entry') == 'filename'
     for index, item in ipairs(playlist) do
-      local title = type(item.title) == 'string' and #item.title > 0 and item.title or false
       items[index] = {
-        title = (not force_filename and title) and title
-        or (is_protocol(item.filename) and item.filename or serialize_path(item.filename).basename),
+        title = is_protocol(item.filename) and item.filename or serialize_path(item.filename).basename,
         hint = tostring(index),
         active = item.current,
         value = index,
