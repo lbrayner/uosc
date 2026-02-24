@@ -1,22 +1,15 @@
-local previous_position
+local home = os.getenv("MPV_CONFIG_HOME")
 
-local function previous_position_get()
-  return previous_position
+if not home or home == "" then
+  print("MPV_CONFIG_HOME is required.")
+  return
 end
 
-local function previous_position_save()
-  mp.command("write-watch-later-config")
-  previous_position = mp.get_property_native("playlist-pos-1")
-end
+local concat = table.concat
 
-mp.add_key_binding("TAB", "previous_position_play", function()
-  local pos = previous_position_get()
+package.path = concat({ package.path, concat({ home, "lib/?.lua" }, "/") }, ";")
 
-  if pos then
-    previous_position_save()
-    mp.set_property_native("playlist-pos-1", pos)
-  end
-end)
+local control = require("control")
 
 mp.add_key_binding("g", "playlist_go_to", create_self_updating_menu_opener({
   title = t('Go To'),
@@ -40,7 +33,7 @@ mp.add_key_binding("g", "playlist_go_to", create_self_updating_menu_opener({
 
     if count == 1 then return end
 
-    previous_position_save()
+    control.previous_position_save()
     mp.commandv('set', 'playlist-pos-1', tostring(event.value))
   end,
   on_paste = function(event) mp.commandv('loadfile', tostring(event.value), 'append') end,
