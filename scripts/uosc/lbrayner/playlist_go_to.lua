@@ -1,4 +1,4 @@
-local control = require("control")
+local control = require("lbrayner/lib/control")
 
 mp.add_key_binding("g", "playlist_go_to", create_self_updating_menu_opener({
   title = t('Go To'),

@@ -7,6 +7,10 @@ end
 
 local concat = table.concat
 
-package.path = concat({ package.path, concat({ home, "lib/?.lua" }, "/") }, ";")
+package.path = concat({
+  package.path,
+  concat({ home, "common/?.lua" }, "/"),
+  concat({ home, "common/?/init.lua" }, "/"),
+}, ";")
 
 require("lbrayner.playlist_go_to")
