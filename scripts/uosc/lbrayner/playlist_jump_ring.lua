@@ -1,4 +1,6 @@
+local concat = table.concat
 local control = require("lbrayner/lib/control")
+local playlist_index = require("lbrayner/lib/playlist_index")
 
 mp.add_key_binding("F5", "playlist_jump_ring", create_self_updating_menu_opener({
   title = t('Playlist Jump Ring'),
@@ -6,27 +8,32 @@ mp.add_key_binding("F5", "playlist_jump_ring", create_self_updating_menu_opener(
   list_prop = 'user-data/lbrayner/playlist_jump_ring/playlist_jump_ring',
   serializer = function(playlist)
     local items = {}
-    require("mp.msg").info("helo from uosc")
 
-    print("playlist", playlist)
     if not playlist then return items end
-    print("Hello")
 
-    local force_filename = mp.get_property_native('osd-playlist-entry') == 'filename'
-    for filename in pairs(playlist) do
+    for index, filename in ipairs(playlist) do
       table.insert(items, {
         title = filename,
+        hint = tostring(index),
+        value = {
+          filename = filename,
+          index = index,
+        },
       })
     end
     return items
   end,
   on_activate = function(event)
-    local count = mp.get_property_native("playlist-count")
+    local index = event.value.index
+    local filename = event.value.filename
+    local item = playlist_index.get_extended_playlist_items_by_filename(filename)[1]
 
-    if count == 1 then return end
+    if not item then
+      mp.osd_message(concat({ "Playlist Jump Ring position", index, "invalid" }, " "))
+      return
+    end
 
-    control.previous_position_save()
-    mp.commandv('set', 'playlist-pos-1', tostring(event.value))
+    control.playlist_jump_to_position(item.pos)
   end,
   on_paste = function(event) mp.commandv('loadfile', tostring(event.value), 'append') end,
   on_key = function(event)
