@@ -14,3 +14,4 @@ package.path = concat({
 }, ";")
 
 require("lbrayner.playlist_go_to")
+require("lbrayner.playlist_jump_ring")
