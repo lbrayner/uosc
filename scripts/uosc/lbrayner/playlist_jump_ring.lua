@@ -1,12 +1,9 @@
 local control = require("lbrayner/lib/control")
-local EXTENDED_PLAYLIST_ITEMS_BY_FILENAME = (
-  "user-data/lbrayner/playlist_index/extended_playlist_items_by_filename"
-)
 
 mp.add_key_binding("F5", "playlist_jump_ring", create_self_updating_menu_opener({
   title = t('Playlist Jump Ring'),
   type = 'playlist_jump_ring',
-  list_prop = 'user-data/lbrayner/playlist_index/extended_playlist_items_by_filename',
+  list_prop = 'user-data/lbrayner/playlist_jump_ring/playlist_jump_ring',
   serializer = function(playlist)
     local items = {}
     require("mp.msg").info("helo from uosc")
@@ -16,14 +13,9 @@ mp.add_key_binding("F5", "playlist_jump_ring", create_self_updating_menu_opener(
     print("Hello")
 
     local force_filename = mp.get_property_native('osd-playlist-entry') == 'filename'
-    for _, is in pairs(playlist) do
-      local i = is[1]
-
+    for filename in pairs(playlist) do
       table.insert(items, {
-        title = is_protocol(i.filename) and i.filename or serialize_path(i.filename).basename,
-        hint = tostring(i.pos),
-        active = i.current,
-        value = i.pos,
+        title = filename,
       })
     end
     return items
