@@ -35,11 +35,9 @@ mp.add_key_binding("F5", "playlist_jump_ring", create_self_updating_menu_opener(
 
     control.playlist_jump_to_position(item.pos)
   end,
-  on_paste = function(event) mp.commandv('loadfile', tostring(event.value), 'append') end,
   on_key = function(event)
     if event.id == 'ctrl+c' and event.selected_item then
-      local payload = mp.get_property_native('playlist/' .. (event.selected_item.value - 1) .. '/filename')
-      set_clipboard(payload)
+      set_clipboard(event.selected_item.value.filename)
     end
   end,
   on_move = function(event)
