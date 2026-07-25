@@ -18,12 +18,7 @@ mp.add_key_binding("g", "playlist_go_to", create_self_updating_menu_opener({
     return items
   end,
   on_activate = function(event)
-    local count = mp.get_property_native("playlist-count")
-
-    if count == 1 then return end
-
-    control.previous_position_save()
-    mp.commandv('set', 'playlist-pos-1', tostring(event.value))
+    control.playlist_jump_to_position(event.value)
   end,
   on_paste = function(event) mp.commandv('loadfile', tostring(event.value), 'append') end,
   on_key = function(event)
