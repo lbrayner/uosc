@@ -6,12 +6,12 @@ mp.add_key_binding("F5", "playlist_jump_ring", create_self_updating_menu_opener(
   title = t('Playlist Jump Ring'),
   type = 'playlist_jump_ring',
   list_prop = 'user-data/lbrayner/playlist_jump_ring/playlist_jump_ring',
-  serializer = function(playlist)
+  serializer = function(jump_ring)
     local items = {}
 
-    if not playlist then return items end
+    if not jump_ring then return items end
 
-    for index, filename in ipairs(playlist) do
+    for index, filename in ipairs(jump_ring) do
       table.insert(items, {
         title = filename,
         hint = tostring(index),
