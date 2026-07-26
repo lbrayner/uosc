@@ -11,6 +11,10 @@ mp.add_key_binding("F5", "playlist_jump_ring", create_self_updating_menu_opener(
 
     if not jump_ring then return items end
 
+    local current = mp.get_property(concat({
+      "playlist/", mp.get_property_native("playlist-pos-1") - 1, "/filename"
+    }))
+
     for index, filename in ipairs(jump_ring) do
       table.insert(items, {
         title = filename,
@@ -19,6 +23,7 @@ mp.add_key_binding("F5", "playlist_jump_ring", create_self_updating_menu_opener(
           filename = filename,
           index = index,
         },
+        active = filename == current,
       })
     end
     return items
