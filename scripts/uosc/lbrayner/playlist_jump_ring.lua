@@ -30,12 +30,12 @@ local open_jump_ring = create_self_updating_menu_opener({
     return items
   end,
   on_activate = function(event)
-    local index = event.value.index
+    local pos = event.value.index
     local filename = event.value.filename
     local item = playlist_index.get_extended_playlist_items_by_filename(filename)[1]
 
     if not item then
-      mp.osd_message(concat({ "Playlist Jump Ring position", index, "invalid" }, " "))
+      mp.osd_message(concat({ "Playlist Jump Ring position", pos, "invalid" }, " "))
       return
     end
 
@@ -50,7 +50,10 @@ local open_jump_ring = create_self_updating_menu_opener({
     local from, to = event.from_index, event.to_index
     mp.commandv('playlist-move', tostring(from - 1), tostring(to - (to > from and 0 or 1)))
   end,
-  on_remove = function(event) mp.commandv('playlist-remove', tostring(event.value - 1)) end,
+  on_remove = function(event)
+    local pos = event.value.index
+    playlist_jump_ring.remove(pos)
+  end,
 })
 
 mp.add_key_binding("F5", "playlist_jump_ring", function()
