@@ -1,8 +1,9 @@
 local concat = table.concat
 local control = require("lbrayner/lib/control")
 local playlist_index = require("lbrayner/lib/playlist_index")
+local playlist_jump_ring = require("lbrayner/lib/playlist_jump_ring")
 
-mp.add_key_binding("F5", "playlist_jump_ring", create_self_updating_menu_opener({
+local open_jump_ring = create_self_updating_menu_opener({
   title = t('Playlist Jump Ring'),
   type = 'playlist_jump_ring',
   list_prop = 'user-data/lbrayner/playlist_jump_ring/playlist_jump_ring',
@@ -50,4 +51,9 @@ mp.add_key_binding("F5", "playlist_jump_ring", create_self_updating_menu_opener(
     mp.commandv('playlist-move', tostring(from - 1), tostring(to - (to > from and 0 or 1)))
   end,
   on_remove = function(event) mp.commandv('playlist-remove', tostring(event.value - 1)) end,
-}))
+})
+
+mp.add_key_binding("F5", "playlist_jump_ring", function()
+  playlist_jump_ring.load()
+  open_jump_ring()
+end)
