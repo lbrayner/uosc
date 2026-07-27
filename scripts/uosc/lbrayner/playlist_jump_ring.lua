@@ -48,7 +48,7 @@ local open_jump_ring = create_self_updating_menu_opener({
   end,
   on_move = function(event)
     local from, to = event.from_index, event.to_index
-    mp.commandv('playlist-move', tostring(from - 1), tostring(to - (to > from and 0 or 1)))
+    playlist_jump_ring.swap(from, to)
   end,
   on_remove = function(event)
     local pos = event.value.index
