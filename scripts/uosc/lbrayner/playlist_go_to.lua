@@ -20,7 +20,6 @@ mp.add_key_binding("g", "playlist_go_to", create_self_updating_menu_opener({
   on_activate = function(event)
     control.playlist_jump_to_position(event.value)
   end,
-  on_paste = function(event) mp.commandv('loadfile', tostring(event.value), 'append') end,
   on_key = function(event)
     if event.id == 'ctrl+c' and event.selected_item then
       local payload = mp.get_property_native('playlist/' .. (event.selected_item.value - 1) .. '/filename')
