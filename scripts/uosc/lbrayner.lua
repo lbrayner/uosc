@@ -13,5 +13,6 @@ package.path = concat({
   concat({ home, "common/?/init.lua" }, "/"),
 }, ";")
 
-require("lbrayner.playlist_go_to")
+require("lbrayner.marks")
+require("lbrayner.playlist_jump_ring")
 require("lbrayner.playlist_jump_ring")
