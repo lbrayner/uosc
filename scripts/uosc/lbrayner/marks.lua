@@ -1,11 +1,12 @@
 local concat = table.concat
 local control = require("lbrayner/lib/control")
+local marks = require("lbrayner/lib/marks")
 local playlist_index = require("lbrayner/lib/playlist_index")
 
-mp.add_key_binding("F4", "marks", create_self_updating_menu_opener({
+local open_marks = create_self_updating_menu_opener({
   title = t('Marks'),
   type = 'marks',
-  list_prop = 'user-data/lbrayner/marks/marks',
+  list_prop = 'user-data/lbrayner/marks/list',
   serializer = function(marks)
     local items = {}
 
@@ -44,4 +45,9 @@ mp.add_key_binding("F4", "marks", create_self_updating_menu_opener({
       set_clipboard(payload)
     end
   end,
-}))
+})
+
+mp.add_key_binding("F4", "marks", function()
+  marks.load()
+  open_marks()
+end)
