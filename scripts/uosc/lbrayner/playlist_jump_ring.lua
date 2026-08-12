@@ -16,7 +16,9 @@ local open_jump_ring = create_self_updating_menu_opener({
       "playlist/", mp.get_property("playlist-pos"), "/filename"
     }))
 
-    for index, filename in ipairs(jump_ring) do
+    for index = #jump_ring, 1, -1 do
+      local filename = jump_ring[index]
+
       table.insert(items, {
         title = filename,
         hint = tostring(index),
@@ -27,6 +29,7 @@ local open_jump_ring = create_self_updating_menu_opener({
         active = filename == current,
       })
     end
+
     return items
   end,
   on_activate = function(event)
